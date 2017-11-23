@@ -64,4 +64,4 @@ _NOTES:_
 
 * Go to `Options` and select `Shared folders`.
   * Add shared folders as required.
-* VMWare Tools is installed by default with Ubuntu 17.10.
+* Open-VM-Tools is installed by default with Ubuntu 17.10.
