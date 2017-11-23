@@ -76,19 +76,59 @@ $ sudo nano /etc/fstab
 
 __Add these to the bottom of the file depending on your needs:__
 
-* To place all hgfsclient folders into the one mount point
+To place all hgfsclient folders into the one mount point
 
 ``` bash
-.host:/ /{client_mount_point} fuse.vmhgfs-fuse allow_other,uid=1000,gid=1000,auto_unmount,defaults,nonempty 0 0
+.host:/ /{client_mount_point} fuse.vmhgfs-fuse allow_other,uid=1000,gid=1000,auto_unmount,defaults 0 0
 ```
 
 
 
-* To place a single folder into the mount point
+To place a single folder into the mount point
 
 ```bash
 .host:/dropbox /home/codeninja/Dropbox fuse.vmhgfs-fuse allow_other,uid=1000,gid=1000,auto_unmount,defaults 0 0
 ```
+
+
+
+### Install "vanilla" Gnome Shell
+
+> REF: http://www.omgubuntu.co.uk/2017/09/ubuntu-17-10-gnome-shell-ambiance
+>
+> REF: http://www.omgubuntu.co.uk/2017/10/install-vanilla-gnome-shell-ubuntu-17-10
+
+
+
+For Ubuntu 17.10, the default X window system is a modified gnome that looks like Unity8. To remove and install the vanilla gnome shell that will be used in the next iteration of Ubuntu, follow the following steps.
+
+
+
+```bash
+$ sudo apt-get install gnome-session
+```
+
+
+
+##### Alternatively, install this gorgeous United GNOME Theme
+
+> REF: http://www.omgubuntu.co.uk/2017/05/united-gnome-theme-updated
+>
+> REF: https://github.com/godlyranchdressing/United-GNOME
+
+
+
+```bash
+$ sudo apt-get install gnome-themes-standard pixmap murrine-themes
+$ git clone https://github.com/godlyranchdressing/United-GNOME
+$ tar -xvzf United-GNOME/United-Ubuntu-alt
+```
+
+
+
+
+
+* Extract the folders and install the whole directory into ~/.themes
 
 
 
@@ -230,8 +270,12 @@ Now disable apport permanently: `$ sudo nano /etc/default/apport`
 ## Development Tools
 
 * Atom
+  * https://atom.io/
 * PyCharm
+  * https://www.jetbrains.com/toolbox/
 * Anaconda
+  * https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/20/conda/
+  * https://www.anaconda.com/download/#linux
 * ​
 
 
