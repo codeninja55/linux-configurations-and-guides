@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo openvpn --daemon nordvpn --config /home/codeninja/.nordvpn/config/au23.nordvpn.com.udp1194.ovpn

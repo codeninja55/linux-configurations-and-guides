@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo '##### WARNING #####'
+echo '## RUN THIS SCRIPT AT YOUR OWN RISK ##'
+
+sudo apt-get update
+sudo apt-get remove brasero brltty cowsay duplicity gimp
+sudo apt-get remove gufw hexchat genisoimage
+sudo apt-get remove nvidia-prime-applet pidgin pix rhythmbox thunderbird tomboy transmission-gtk vino
+sudo apt-get remove wodim xed xplayer yelp
+sudo apt-get remove gnome-orca
+
+# Uncomment to remove unnecessary themes if you install your own
+# sudo apt purge gnome-themes-standard* gnome-accessibility-themes mint-x-icons mint-y-icons
+# sudo apt purge mint-y-themes cinnamon-themes
+
+sudo apt autoremove
