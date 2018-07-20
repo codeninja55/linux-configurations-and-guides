@@ -11,7 +11,7 @@ $ sudo apt-get install tlp tlp-rdw
 
 Install package: `$ sudo apt-get install xserver-xorg-input-libinput`
 
-Make changes to the configuration file: `$ sudo nano /usr/share/X11/xorg.conf.d/90-libinput.conf`
+Make changes to the configuration file: `$ sudo nano /usr/share/X11/xorg.conf.d/40-libinput.conf`
 
 Find this section:
 
@@ -31,17 +31,141 @@ Option "PalmDetection" "True"
 Option "TappingDragLock" "True"
 ```
 
-## Activate Firewall
 
-```
-$ sudo ufw status
-$ sudo ufw enable
-$ sudo ufw allow ssh
-```
 
 ## Install Dropbox
 
-`$ sudo apt-get update && sudo apt-get install dropbox`
+Download the Dropbox daemon:
+
+```bash
+$ cd ~ && wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -
+$ ~/.dropbox-dist/dropboxd
+```
+
+* From there, follow the link/browser to link a Dropbox account to the system. 
+
+Download the Dropbox python script:
+
+```bash
+$ wget --show-progress -O dropbox.py 'https://www.dropbox.com/download?dl=packages/dropbox.py'
+$ sudo mv ~/dropbox.py /usr/bin/
+$ sudo chmod +x /usr/bin/dropbox.py
+$ sudo chmod 755 /usr/bin/dropbox.py
+$ source ~/.bashrc
+```
+
+Then use the script to configure how Dropbox will work.
+
+```bash
+Dropbox command-line interface
+
+commands:
+
+Note: use dropbox help <command> to view usage for a specific command.
+
+ status       get current status of the dropboxd
+ throttle     set bandwidth limits for Dropbox
+ help         provide help
+ stop         stop dropboxd
+ running      return whether dropbox is running
+ start        start dropboxd
+ filestatus   get current sync status of one or more files
+ ls           list directory contents with current sync status
+ autostart    automatically start dropbox at login
+ exclude      ignores/excludes a directory from syncing
+ lansync      enables or disables LAN sync
+ sharelink    get a shared link for a file in your dropbox
+ proxy        set proxy settings for Dropbox
+```
+
+Add the startup procedure to cron:
+
+```bash
+$ sudo crontab -e
+$ 2
+```
+
+Add the following to cron:
+
+```
+@reboot dropbox.py start
+```
+
+
+
+## Install Typora
+
+```bash
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+$ sudo echo 'deb https://typora.io ./linux/' | sudo tee /etc/apt/sources.list.d/typora.list
+$ sudo apt update
+$ sudo apt install typora
+```
+
+
+
+## Install Jetbrains Toolbox
+
+Make the following script in a new file called `$ touch ~/jetbrains-toolbox-install.sh`:
+
+```bash
+#!/bin/bash
+
+[ $(id -u) != "0" ] && exec sudo "$0" "$@"
+echo -e " \e[94mInstalling Jetbrains Toolbox\e[39m"
+echo ""
+
+function getLatestUrl() {
+  USER_AGENT=('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36')
+
+  URL=$(curl 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' -H 'Origin: https://www.jetbrains.com' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.8' -H "${USER_AGENT[@]}" -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.jetbrains.com/toolbox/download/' -H 'Connection: keep-alive' -H 'DNT: 1' --compressed | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}'| sed 's/[", ]//g')
+  echo $URL
+}
+
+getLatestUrl
+
+FILE=$(basename ${URL})
+DEST=$PWD/$FILE
+
+echo ""
+echo -e "\e[94mDownloading Toolbox files \e[39m"
+echo ""
+wget -cO  ${DEST} ${URL} --read-timeout=5 --tries=0
+echo ""
+echo -e "\e[32mDownload complete!\e[39m"
+echo ""
+DIR="/opt/jetbrains-toolbox"
+echo ""
+echo  -e "\e[94mInstalling to $DIR\e[39m"
+echo ""
+
+if mkdir ${DIR}; then
+    tar -xzf ${DEST} -C ${DIR} --strip-components=1
+fi
+
+chmod -R +rwx ${DIR}
+touch ${DIR}/jetbrains-toolbox.sh
+echo "#!/bin/bash" >> $DIR/jetbrains-toolbox.sh
+echo "$DIR/jetbrains-toolbox" >> $DIR/jetbrains-toolbox.sh
+
+ln -s ${DIR}/jetbrains-toolbox.sh /usr/local/bin/jetbrains-toolbox
+chmod -R +rwx /usr/local/bin/jetbrains-toolbox
+
+echo ""
+rm ${DEST}
+
+echo  -e "\e[32mDone.\e[39m"
+```
+
+Make it executable and run:
+
+```bash
+$ sudo chmod +x ~/jetbrains-toolbox-install.sh
+$ ~/jetbrains-toolbox-install.sh
+$ jetbrains-toolbox
+```
+
+
 
 ## Change Root password
 
@@ -55,6 +179,8 @@ $ sudo usermod root -p password
 $ sudo passwd root
 {Enter your new secure root password}
 ```
+
+
 
 ## Change sudo commands for Shutdown
 
@@ -73,32 +199,13 @@ $ sudo visudo
 - Add a user specification under 'User privilege specification' and 'sudo...' specification already present:
   - %{username} ALL=(ALL) NOPASSWD: SHUTDOWN_CMDS
 
-## Install Java via PPA
+######
 
-```
-$ sudo apt-get update
-$ java –version
-$ sudo add-apt-repository ppa:webupd8team/java
-$ sudo apt-get update
-$ sudo apt-get install oracle-java8-installer
-$ sudo apt-get install default-jre
-$ sudo apt-get install default-jdk
-```
+## Configure Git and Github
 
-## Install NODE.JS v6
 
-```
-$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-$ sudo apt-get install -y nodejs build-essential
-```
 
-##### Configure global installation of npm
 
-```
-$ cd ~
-$ npm config set prefix ~/npm/bin
-$ echo 'export PATH=$PATH:/home/{username}/npm/bin' >> ~/.bashrc
-```
 
 ## Install MySQL Server
 
@@ -112,28 +219,12 @@ $ sudo apt-get update
 $ sudo apt-get install mysql-server-5.7 --no-upgrade
 ```
 
-## Update Thunderbolt firmware
-
-**USE ONLY IF THUNDERBOLT PORT NOT WORKING**
-
-**REQUIRES APPLYING PATCHES**
-
-**DO THIS AT YOUR OWN RISK!**
-
-Refer to Official Dell GitHub fix for more information:
-- https://github.com/dell/thunderbolt-nvm-linux
-
-Download the provided local patches to integrate locally: `$ git clone https://github.com/01org/thunderbolt-software-kernel-tree.git ~/thunderbolt-software-kernel-tree`
-
-Download the provided Debian package: `$ git clone https://github.com/dell/thunderbolt-icm-dkms.git ~/thunderbolt-icm-dkms`
-
-**NOTE: Not tested on my own XPS 13. Please do this at your own risk.**
 
 
 ## Install NORD VPN
 
 Download the config files:
-```
+```bash
 $ mkdir ~/.nordvpn && ~/.nordvpn/config && cd ~/.nordvpn/config
 $ sudo apt-get install ca-certificates traceroute
 $ sudo wget https://nordvpn.com/api/files/zip
