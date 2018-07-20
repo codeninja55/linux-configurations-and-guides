@@ -1,4 +1,4 @@
-# Linux Mint Installation on Dell XPS 13 9360
+# Parrot OS Installation on Dell XPS 13 9360
 ## System Configurations:
 ```
 CPU: Intel Core i7-7500U
