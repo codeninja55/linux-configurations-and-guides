@@ -286,3 +286,4 @@ Save and exit, then make it executable: `$ sudo chmod +x /bin/hma.d`
 You can now connect to HMA VPN as a daemon service by executing in terminal: `$ hma.d`
 
 NOTE: To quit the daemon service, execute: `$ ~/.hma_vpn/hma-vpn.sh -x`
+## Change Default Browser \n xdg-settings set default-web-browser chromium.desktop
