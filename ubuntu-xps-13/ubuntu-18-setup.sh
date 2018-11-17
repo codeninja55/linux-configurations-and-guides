@@ -44,7 +44,7 @@ function updateApt() { sudo apt update; }
 function distUpgradeApt() { sudo apt update && sudo apt -y dist-upgrade; echo ""; }
 function upgradeApt() { sudo apt update && sudo apt -y upgrade; echo ""; }
 function cleanApt() { sudo apt autoclean && sudo apt-get clean && sudo apt -y autoremove; }
-function fixAptInstall() { sudo apt install -f; echo ""; }
+function fixAptInstall() { sudo apt -y install -f; echo ""; }
 
 
 
@@ -87,16 +87,16 @@ completeMessage
 actionMessage "Installing new packages"
 generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
    gnome-tweaks, compizconfig-settings-manager, exfat-utils, exfat-fuse,
-   seahorse, scala"
+   seahorse, scala dconf-tools"
 sudo apt install -y git curl tlp tlp-rdw xclip chrome-gnome-shell \
      gnome-tweaks compizconfig-settings-manager exfat-utils exfat-fuse \
-     seahorse scala
+     seahorse scala dconf-tools
 completeMessage
 
 
 ############################## Bash Aliases ##############################
 headerMessage "Bash Aliases"
-touch ${HOME}.bash_aliases
+touch ${HOME}/.bash_aliases
 echo -e "alias clrls='clear && ls -a'
 alias clr='clear'
 alias lsa='ls -a'
@@ -106,8 +106,8 @@ alias godl='cd /home/codeninja/Downloads/'
 alias godropbox='cd ~/Dropbox && ls -a'
 alias godev='cd ~/Dropbox/development && ls -a'
 alias update-apt='sudo apt-get update && sudo apt-get upgrade'
-alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'" > ${HOME}.bash_aliases
-cat ${HOME}.bash_aliases
+alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'" > ${HOME}/.bash_aliases
+cat ${HOME}/.bash_aliases
 completeMessage
 
 headerMessage "Activating tlp Battery Saver"
@@ -120,7 +120,7 @@ sudo ufw status
 actionMessage "Enabling firewall"
 sudo ufw enable
 actionMessage "Setting rules"
-sudo ufw allow shh
+sudo ufw allow ssh
 sudo ufw allow from 192.168.5.0/24 to any port 24800
 completeMessage
 
@@ -134,7 +134,7 @@ completeMessage
 
 actionMessage "Installing Git LFS"
 updateApt
-sudo apt install gnupg apt-transport-https
+sudo apt -y install gnupg apt-transport-https
 curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
 deb https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
 deb-src https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
@@ -150,7 +150,8 @@ mkdir ${linux_config_dir}
 if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
     git clone ${linux_config_url} ${linux_config_dir}
 fi
-chmod -R +rwx ${linux_config_dir}
+chmod -R +rwx ${HOME}/Github
+sudo chown -R codeninja:codeninja ${HOME}/Github
 
 
 ############################## Dropbox ##############################
@@ -161,7 +162,7 @@ BACKUP_DIR=${HOME}/backup
 if mkdir ${BACKUP_DIR}; then
   sudo unzip ${dropbox_zip} -d ${BACKUP_DIR}
 fi
-sudo chmod -R +rwx ${BACKUP_DIR}
+chmod -R +rwx ${BACKUP_DIR}
 sudo chown -R codeninja:codeninja ${BACKUP_DIR}
 
 headerMessage "Dropbox"
@@ -199,6 +200,7 @@ echo ""
 sudo apt install -y default-jre
 echo ""
 sudo apt install -y default-jdk
+sudo apt install -y oracle-java8-set-default
 cleanApt
 
 
@@ -208,19 +210,19 @@ cleanApt
 ### TODO: Need to do configurations for Spark
 ############################## Spark ##############################
 headerMessage "Spark 2.1.3"
-spark_zip=${BACKUP_DIR}/packages/spark-2.1.3-bin-hadoop2.7.tgz
+spark_zip=${BACKUP_DIR}/Packages/spark-2.1.3-bin-hadoop2.7.tgz
 spark_intermed_dir=${HOME}/spark-2.1.3-bin-hadoop2.7
 spark_dir=/usr/local/spark-2.1.3-bin-hadoop2.7
 
 actionMessage "Installating Spark to ${spark_dir}"
 tar -xvf ${spark_intermed_dir} -C ${spark_intermed_dir}
-sudo mv ${spark_intermed_dir} -C /usr/local/
+sudo mv ${spark_intermed_dir} /usr/local/
 sudo ln -s ${spark_dir} /usr/local/spark
-export "##### SPARK #####
-JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
-SCALA_HOME=/usr/share/scala-2.11
-SPARK_HOME=/usr/local/spark
-export PATH=$SPARK_HOME/bin:$JAVA_HOME/bin:$SCALA_HOME/bin:$PATH" > ${HOME}/.bashrc
+echo "##### SPARK #####
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
+export SCALA_HOME=/usr/share/scala-2.11
+export SPARK_HOME=/usr/local/spark
+export PATH=\$SPARK_HOME/bin:\$JAVA_HOME/bin:\$SCALA_HOME/bin:\$PATH" >> ${HOME}/.bashrc
 
 
 ############################## Typora ##############################
@@ -231,8 +233,10 @@ actionMessage "Adding repository"
 sudo add-apt-repository 'deb https://typora.io/linux ./'
 updateApt
 actionMessage "Installing typora"
-sudo apt install typora
+sudo apt install -y typora
 
+
+############################## Google Chrome ##############################
 headerMessage "Google Chrome"
 chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
 chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
@@ -250,8 +254,17 @@ atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
 
 actionMessage "Installing Atom from ${atom_url}"
 wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
+sudo apt install -y gconf2 libgnome-keyring0
 sudo dpkg -i ${atom_deb}
 rm ${atom_deb}
+
+actionMessage "Installing Atom plugins"
+apm install atom-material-ui
+apm install atom-material-syntax
+apm install atom-material-syntax-dark
+apm install language-scala
+apm install linter-scalac
+apm install intellij-idea-keymap
 
 
 ############################## Gitkraken ##############################
@@ -299,13 +312,18 @@ echo ""
 ln -s ${DIR}/jetbrains-toolbox.sh /usr/local/bin/jetbrains-toolbox
 chmod -R +rwx /usr/local/bin/jetbrains-toolbox
 rm ${DEST}
+
+cp -r ${BACKUP_DIR}/.IntelliJIdea2018.2 ${HOME}
+cp -r ${BACKUP_DIR}/.CLion2018.2 ${HOME}
+cp -r ${BACKUP_DIR}/.PyCharm2018.2 ${HOME}
+
 completeMessage
 
 
 ############################## Synergy ##############################
 headerMessage "Synergy"
 actionMessage "Installing Synergy 1"
-synergy_deb=${BACKUP_DIR}/packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
+synergy_deb=${BACKUP_DIR}/Packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
 sudo dpkg -i ${synergy_deb}
 rm ${synergy_deb}
 
@@ -313,7 +331,7 @@ rm ${synergy_deb}
 ############################## Global Protect ##############################
 headerMessage "Global Protect"
 actionMessage "Installing Global Protect"
-globalprotect_deb=${BACKUP_DIR}/packages/GlobalProtect_deb-4.1.5.0-8.deb
+globalprotect_deb=${BACKUP_DIR}/Packages/GlobalProtect_deb-4.1.5.0-8.deb
 sudo dpkg -i ${globalprotect_deb}
 rm ${globalprotect_deb}
 
@@ -368,10 +386,20 @@ headerMessage "gnome shell configurations"
 gnome_shell_backup=${linux_config_dir}/ubuntu-xps-13/gnome_shell
 actionMessage "Installing dependencies for system-monitor"
 #### system-monitor extension
-sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
+sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
+sudo apt install -y -f
+sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
 actionMessage "Copying extensions to ${HOME}/.local/share/gnome-shell/extenions/"
 sudo cp -vr ${gnome_shell_backup}/*  ${HOME}/.local/share/gnome-shell/extensions/
 dconf load / < ${gnome_shell_backup}/saved_settings.dconf
+
+gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
+gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED
+gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 32
+gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
+
+gsettings reset org.gnome.shell.extensions.dash-to-dock dash-max
 
 
 ############################## Ubuntu Cleanup ##############################
@@ -383,7 +411,7 @@ sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
 actionMessage "Removing accessibility utilities"
 sudo apt purge speech-dispatcher orca
 actionMessage "Installing zRam"
-sudo apt install zram-config
+sudo apt install -y zram-config
 actionMessage "Defragging"
 sudo e4defrag -c /
 cleanApt
@@ -413,3 +441,26 @@ sudo cat /etc/modprobe.d/blacklist-nouveau.conf
 sudo update-initramfs -u
 sudo update-grub
 generalMessage "[!! IMPORTANT !!] Must reboot for these changes to take effect"
+
+
+
+############################## Anaconda ##############################
+headerMessage "Anaconda"
+anaconda_run=${BACKUP_DIR}/Packages/Anaconda3-5.3.0-Linux-x86_64.sh
+actionHeader "Installing Anaconda"
+sudo chmod +x ${anaconda_run}
+inputMessage
+${anaconda_run}
+
+
+############################## Git PKI ##############################
+headerMessage "Github RSA"
+actionMessage "Creating Github RSA Key"
+cat /dev/zero | ssh-keygen -t rsa -b 4096 -C "andrew@codeninja55.me" -f ${HOME}/.ssh/github_rsa -q -N ""
+eval "$(ssh-agent -s)"
+ssh-add ${HOME}/.ssh/github_rsa
+xclip -sel clip < ${HOME}/.ssh/github_rsa.pub
+generalMessage "Go to paste new key https://github.com/settings/keys"
+completeMessage
+
+headerMessage "Ubuntu 18.04 Initial Configurations COMPLETE"
