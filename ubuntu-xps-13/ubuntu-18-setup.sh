@@ -79,78 +79,78 @@ echo ""
 
 
 ############################# APT Package Management ###########################
-# headerMessage "APT Package Management"
-# actionMessage "Update and upgrade apt packages"
-# distUpgradeApt
-# completeMessage
+headerMessage "APT Package Management"
+actionMessage "Update and upgrade apt packages"
+distUpgradeApt
+completeMessage
 
-# actionMessage "Installing new packages"
-# generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
-   # gnome-tweaks, compizconfig-settings-manager, exfat-utils, exfat-fuse,
-   # seahorse, scala"
-# sudo apt install -y git curl tlp tlp-rdw xclip chrome-gnome-shell \
-#      gnome-tweaks compizconfig-settings-manager exfat-utils exfat-fuse \
-#      seahorse scala
-# completeMessage
+actionMessage "Installing new packages"
+generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
+   gnome-tweaks, compizconfig-settings-manager, exfat-utils, exfat-fuse,
+   seahorse, scala"
+sudo apt install -y git curl tlp tlp-rdw xclip chrome-gnome-shell \
+     gnome-tweaks compizconfig-settings-manager exfat-utils exfat-fuse \
+     seahorse scala
+completeMessage
 
 
 ############################## Bash Aliases ##############################
-# headerMessage "Bash Aliases"
-# touch ${HOME}.bash_aliases
-# echo -e "alias clrls='clear && ls -a'
-# alias clr='clear'
-# alias lsa='ls -a'
-# alias lsl='ls -l'
-# alias gohome='cd /home/codeninja/'
-# alias godl='cd /home/codeninja/Downloads/'
-# alias godropbox='cd ~/Dropbox && ls -a'
-# alias godev='cd ~/Dropbox/development && ls -a'
-# alias update-apt='sudo apt-get update && sudo apt-get upgrade'
-# alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'" > ${HOME}.bash_aliases
-# cat ${HOME}.bash_aliases
-# completeMessage
+headerMessage "Bash Aliases"
+touch ${HOME}.bash_aliases
+echo -e "alias clrls='clear && ls -a'
+alias clr='clear'
+alias lsa='ls -a'
+alias lsl='ls -l'
+alias gohome='cd /home/codeninja/'
+alias godl='cd /home/codeninja/Downloads/'
+alias godropbox='cd ~/Dropbox && ls -a'
+alias godev='cd ~/Dropbox/development && ls -a'
+alias update-apt='sudo apt-get update && sudo apt-get upgrade'
+alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'" > ${HOME}.bash_aliases
+cat ${HOME}.bash_aliases
+completeMessage
 
-# headerMessage "Activating tlp Battery Saver"
-# sudo tlp start
-# completeMessage
+headerMessage "Activating tlp Battery Saver"
+sudo tlp start
+completeMessage
 
-# headerMessage "Activating UFW Firewall"
-# generalMessage "UFW Status: "
-# sudo ufw status
-# actionMessage "Enabling firewall"
-# sudo ufw enable
-# actionMessage "Setting rules"
-# sudo ufw allow shh
-# sudo ufw allow from 192.168.5.0/24 to any port 24800
-# completeMessage
+headerMessage "Activating UFW Firewall"
+generalMessage "UFW Status: "
+sudo ufw status
+actionMessage "Enabling firewall"
+sudo ufw enable
+actionMessage "Setting rules"
+sudo ufw allow shh
+sudo ufw allow from 192.168.5.0/24 to any port 24800
+completeMessage
 
 
 ############################## Git Configurations and LFS ######################
-# headerMessage "Git Configurations and LFS"
-# actionMessage "Configuring --global"
-# git config --global user.name "codeninja55"
-# git config --global user.email andrew@codeninja55.me
-# completeMessage
-#
-# actionMessage "Installing Git LFS"
-# updateApt
-# sudo apt install gnupg apt-transport-https
-# curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
-# deb https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
-# deb-src https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
-# updateApt
-# sudo apt install git-lfs
+headerMessage "Git Configurations and LFS"
+actionMessage "Configuring --global"
+git config --global user.name "codeninja55"
+git config --global user.email andrew@codeninja55.me
+completeMessage
 
-# headerMessage "Linux Configurations"
-# linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
-# linux_config_dir=${HOME}/Github/linux-configurations-and-guides
-# actionMessage "Downloading from ${linux_config_url}"
-# mkdir ${HOME}/Github
-# mkdir ${linux_config_dir}
-# if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
-#     git clone ${linux_config_url} ${linux_config_dir}
-# fi
-# chmod -R +rwx ${linux_config_dir}
+actionMessage "Installing Git LFS"
+updateApt
+sudo apt install gnupg apt-transport-https
+curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
+deb https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
+deb-src https://packagecloud.io/github/git-lfs/ubuntu/ $(lsb_release -cs) main
+updateApt
+sudo apt install git-lfs
+
+headerMessage "Linux Configurations"
+linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
+linux_config_dir=${HOME}/Github/linux-configurations-and-guides
+actionMessage "Downloading from ${linux_config_url}"
+mkdir ${HOME}/Github
+mkdir ${linux_config_dir}
+if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
+    git clone ${linux_config_url} ${linux_config_dir}
+fi
+chmod -R +rwx ${linux_config_dir}
 
 
 ############################## Dropbox ##############################
@@ -164,44 +164,46 @@ fi
 sudo chmod -R +rwx ${BACKUP_DIR}
 sudo chown -R codeninja:codeninja ${BACKUP_DIR}
 
-# headerMessage "Dropbox"
-# dropbox_url='https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb'
-# dropbox_deb=${DOWNLOAD_DIR}/$(basename ${dropbox_url})
-# actionMessage "Installing Dropbox from ${dropbox_url}"
-# wget -cO ${dropbox_deb} ${dropbox_url} --read-timeout=5 --tries=0
-# sudo dpkg -i ${dropbox_deb}
-# fixAptInstall
-# sudo dpkg -i ${dropbox_deb}
-# rm ${dropbox_deb}
-# nautilus --quit
-# generalMessage "[!! IMPORTANT !!] You must install Dropbox and sign in after this this script finishes."
+headerMessage "Dropbox"
+dropbox_url='https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb'
+dropbox_deb=${DOWNLOAD_DIR}/$(basename ${dropbox_url})
+actionMessage "Installing Dropbox from ${dropbox_url}"
+wget -cO ${dropbox_deb} ${dropbox_url} --read-timeout=5 --tries=0
+sudo dpkg -i ${dropbox_deb}
+fixAptInstall
+sudo dpkg -i ${dropbox_deb}
+rm ${dropbox_deb}
+nautilus --quit
+generalMessage "[!! IMPORTANT !!] You must install Dropbox and sign in after this this script finishes."
 
-# headerMessage "Pictures"
-# actionMessage "Restoring pictures from backup"
-# cp -vr ${BACKUP_DIR}/Pictures/* ${HOME}/Pictures/
-# completeMessage
+headerMessage "Pictures"
+actionMessage "Restoring pictures from backup"
+cp -vr ${BACKUP_DIR}/Pictures/* ${HOME}/Pictures/
+completeMessage
 
 
 ############################## Java 8 ##############################
-# headerMessage "Java 8"
-# updateApt
-# generalMessage "Java version"
-# java -version
-# actionMessage "Adding ppa:webupd8team/java"
-# sudo add-apt-repository -y ppa:webupd8team/java
-# updateApt
-# actionMessage "Installing Oracle Java 8 JRE and JDK"
-# inputMessage
-# echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-# echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-# sudo apt install -y oracle-java8-installer
-# echo ""
-# sudo apt install -y default-jre
-# echo ""
-# sudo apt install -y default-jdk
-# cleanApt
+headerMessage "Java 8"
+updateApt
+generalMessage "Java version"
+java -version
+actionMessage "Adding ppa:webupd8team/java"
+sudo add-apt-repository -y ppa:webupd8team/java
+updateApt
+actionMessage "Installing Oracle Java 8 JRE and JDK"
+inputMessage
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt install -y oracle-java8-installer
+echo ""
+sudo apt install -y default-jre
+echo ""
+sudo apt install -y default-jdk
+cleanApt
+
 
 ### TODO: Need to do configurations for Node
+
 
 ### TODO: Need to do configurations for Spark
 ############################## Spark ##############################
@@ -222,82 +224,82 @@ export PATH=$SPARK_HOME/bin:$JAVA_HOME/bin:$SCALA_HOME/bin:$PATH" > ${HOME}/.bas
 
 
 ############################## Typora ##############################
-# headerMessage "Typora"
-# actionMessage "Adding key"
-# wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-# actionMessage "Adding repository"
-# sudo add-apt-repository 'deb https://typora.io/linux ./'
-# updateApt
-# actionMessage "Installing typora"
-# sudo apt install typora
-#
-# headerMessage "Google Chrome"
-# chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
-# chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
-#
-# actionMessage "Installing Google Chrome from ${chrome_url}"
-# wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
-# sudo dpkg -i ${chrome_deb}
-# rm ${chrome_deb}
+headerMessage "Typora"
+actionMessage "Adding key"
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+actionMessage "Adding repository"
+sudo add-apt-repository 'deb https://typora.io/linux ./'
+updateApt
+actionMessage "Installing typora"
+sudo apt install typora
+
+headerMessage "Google Chrome"
+chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
+
+actionMessage "Installing Google Chrome from ${chrome_url}"
+wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
+sudo dpkg -i ${chrome_deb}
+rm ${chrome_deb}
 
 
 ############################## Atom ##############################
-# headerMessage "Atom"
-# atom_url='https://atom.io/download/deb'
-# atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
-#
-# actionMessage "Installing Atom from ${atom_url}"
-# wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
-# sudo dpkg -i ${atom_deb}
-# rm ${atom_deb}
+headerMessage "Atom"
+atom_url='https://atom.io/download/deb'
+atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
+
+actionMessage "Installing Atom from ${atom_url}"
+wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
+sudo dpkg -i ${atom_deb}
+rm ${atom_deb}
 
 
 ############################## Gitkraken ##############################
-# headerMessage "GitKraken"
-# gitkraken_url='https://release.gitkraken.com/linux/gitkraken-amd64.deb'
-# gitkraken_deb=${DOWNLOAD_DIR}/$(basename ${gitkraken_url})
-#
-# actionMessage "Installing GitKraken from ${gitkraken_url}"
-# wget -cO ${gitkraken_deb} ${gitkraken_url} --read-timeout=5 --tries=0
-# sudo dpkg -i ${gitkraken_deb}
-# fixAptInstall
-# sudo dpkg -i ${gitkraken_deb}
-# rm ${gitkraken_deb}
+headerMessage "GitKraken"
+gitkraken_url='https://release.gitkraken.com/linux/gitkraken-amd64.deb'
+gitkraken_deb=${DOWNLOAD_DIR}/$(basename ${gitkraken_url})
+
+actionMessage "Installing GitKraken from ${gitkraken_url}"
+wget -cO ${gitkraken_deb} ${gitkraken_url} --read-timeout=5 --tries=0
+sudo dpkg -i ${gitkraken_deb}
+fixAptInstall
+sudo dpkg -i ${gitkraken_deb}
+rm ${gitkraken_deb}
 
 
 ############################## Jetbrains ##############################
-# headerMessage "Jetbrains Toolbox"
-# function getLatestUrl() {
-#   USER_AGENT=('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36')
-#
-#   URL=$(curl 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' -H 'Origin: https://www.jetbrains.com' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.8' -H "${USER_AGENT[@]}" -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.jetbrains.com/toolbox/download/' -H 'Connection: keep-alive' -H 'DNT: 1' --compressed | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}'| sed 's/[", ]//g')
-#   echo $URL
-# }
-# getLatestUrl
-# FILE=$(basename ${URL})
-# DEST=$PWD/$FILE
-#
-# actionMessage "Downloading Toolbox files"
-# wget -cO  ${DEST} ${URL} --read-timeout=5 --tries=0
-# echo ""
-# generalMessage "Download complete."
-#
-# DIR="/opt/jetbrains-toolbox"
-# actionMessage "Installing to $DIR"
-#
-# if mkdir ${DIR}; then
-#     tar -xzf ${DEST} -C ${DIR} --strip-components=1
-# fi
-#
-# chmod -R +rwx ${DIR}
-# touch ${DIR}/jetbrains-toolbox.sh
-# echo "#!/bin/bash" >> $DIR/jetbrains-toolbox.sh
-# echo "$DIR/jetbrains-toolbox" >> $DIR/jetbrains-toolbox.sh
-# echo ""
-# ln -s ${DIR}/jetbrains-toolbox.sh /usr/local/bin/jetbrains-toolbox
-# chmod -R +rwx /usr/local/bin/jetbrains-toolbox
-# rm ${DEST}
-# completeMessage
+headerMessage "Jetbrains Toolbox"
+function getLatestUrl() {
+  USER_AGENT=('User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36')
+
+  URL=$(curl 'https://data.services.jetbrains.com//products/releases?code=TBA&latest=true&type=release' -H 'Origin: https://www.jetbrains.com' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.8' -H "${USER_AGENT[@]}" -H 'Accept: application/json, text/javascript, */*; q=0.01' -H 'Referer: https://www.jetbrains.com/toolbox/download/' -H 'Connection: keep-alive' -H 'DNT: 1' --compressed | grep -Po '"linux":.*?[^\\]",' | awk -F ':' '{print $3,":"$4}'| sed 's/[", ]//g')
+  echo $URL
+}
+getLatestUrl
+FILE=$(basename ${URL})
+DEST=$PWD/$FILE
+
+actionMessage "Downloading Toolbox files"
+wget -cO  ${DEST} ${URL} --read-timeout=5 --tries=0
+echo ""
+generalMessage "Download complete."
+
+DIR="/opt/jetbrains-toolbox"
+actionMessage "Installing to $DIR"
+
+if mkdir ${DIR}; then
+    tar -xzf ${DEST} -C ${DIR} --strip-components=1
+fi
+
+chmod -R +rwx ${DIR}
+touch ${DIR}/jetbrains-toolbox.sh
+echo "#!/bin/bash" >> $DIR/jetbrains-toolbox.sh
+echo "$DIR/jetbrains-toolbox" >> $DIR/jetbrains-toolbox.sh
+echo ""
+ln -s ${DIR}/jetbrains-toolbox.sh /usr/local/bin/jetbrains-toolbox
+chmod -R +rwx /usr/local/bin/jetbrains-toolbox
+rm ${DEST}
+completeMessage
 
 
 ############################## Synergy ##############################
@@ -332,27 +334,27 @@ generalMessage "From ${numix_dir} to ${HOME}"
 chmod -R +rwx ${numix_dir}
 
 if [ -d "${HOME}/.config" ]; then
-  cp -rv ${numix_dir}/.config ${HOME}/.config
+  cp -r ${numix_dir}/.config ${HOME}/.config
 else
-  cp -rv ${numix_dir}/.config ${HOME}/
+  cp -r ${numix_dir}/.config ${HOME}/
 fi
 
 if [ -d "${HOME}/.local" ]; then
-  cp -rv ${numix_dir}/.local ${HOME}/.local
+  cp -r ${numix_dir}/.local ${HOME}/.local
 else
-  cp -rv ${numix_dir}/.local ${HOME}/
+  cp -r ${numix_dir}/.local ${HOME}/
 fi
 
 if [ -d "${HOME}/.icons" ]; then
-  cp -rv ${numix_dir}/.icons ${HOME}/.icons
+  cp -r ${numix_dir}/.icons ${HOME}/.icons
 else
-  cp -rv ${numix_dir}/.icons ${HOME}/
+  cp -r ${numix_dir}/.icons ${HOME}/
 fi
 
 if [ -d "${HOME}/.themes" ]; then
-  cp -rv ${numix_dir}/.themes ${HOME}/.themes
+  cp -r ${numix_dir}/.themes ${HOME}/.themes
 else
-  cp -rv ${numix_dir}/.themes ${HOME}/
+  cp -r ${numix_dir}/.themes ${HOME}/
 fi
 actionMessage "Cleaning up"
 generalMessage "Deleting ${numix_dest} and ${numix_dir}"
@@ -362,52 +364,52 @@ completeMessage
 
 
 ############################## GNOME SHELL CONFIGURATIONS ######################
-# headerMessage "gnome shell configurations"
-# gnome_shell_backup=${linux_config_dir}/ubuntu-xps-13/gnome_shell
-# actionMessage "Installing dependencies for system-monitor"
-##### system-monitor extension
-# sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
-# actionMessage "Copying extensions to ${HOME}/.local/share/gnome-shell/extenions/"
-# sudo cp -vr ${gnome_shell_backup}/*  ${HOME}/.local/share/gnome-shell/extensions/
-# dconf load / < ${gnome_shell_backup}/saved_settings.dconf
+headerMessage "gnome shell configurations"
+gnome_shell_backup=${linux_config_dir}/ubuntu-xps-13/gnome_shell
+actionMessage "Installing dependencies for system-monitor"
+#### system-monitor extension
+sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0  gir1.2-clutter-1.0
+actionMessage "Copying extensions to ${HOME}/.local/share/gnome-shell/extenions/"
+sudo cp -vr ${gnome_shell_backup}/*  ${HOME}/.local/share/gnome-shell/extensions/
+dconf load / < ${gnome_shell_backup}/saved_settings.dconf
 
 
 ############################## Ubuntu Cleanup ##############################
-# headerMessage "Cleaning Up Ubuntu"
-# cleanApt
-# actionMessage "Disabling evolution"
-# sudo mv /usr/lib/evolution-data-server /usr/lib/evolution-data-server-disabled
-# sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
-# actionMessage "Removing accessibility utilities"
-# sudo apt purge -y speech-dispatcher orca
-# actionMessage "Installing zRam"
-# sudo apt install zram-config
-# actionMessage "Defragging"
-# sudo e4defrag -c /
-# cleanApt
-# completeMessage
+headerMessage "Cleaning Up Ubuntu"
+cleanApt
+actionMessage "Disabling evolution"
+sudo mv /usr/lib/evolution-data-server /usr/lib/evolution-data-server-disabled
+sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
+actionMessage "Removing accessibility utilities"
+sudo apt purge speech-dispatcher orca
+actionMessage "Installing zRam"
+sudo apt install zram-config
+actionMessage "Defragging"
+sudo e4defrag -c /
+cleanApt
+completeMessage
 
 
 ############################## NVIDIA CONFIGURATIONS ###########################
-# headerMessage "Nvidia Configurations"
-# actionMessage "Checking for AkiTiO Node and Nvidia devices"
-# echo "Check that kernel version is at least 4.13"
-# uname -a
-# echo -e "\nCheck that eGPU appears as Thunderbolt device"
-# cat /sys/bus/thunderbolt/devices/0-1/device_name
-# echo ""
-# echo "Authorize eGPU device"
-# sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
-# echo -e "\nCheck that eGPU now shows up with lspci"
-# lspci -nn | grep -i nvidia
-# echo ""
-# ubuntu-drivers devices
-#
-# actionMessage "Blacklisting Nouveau"
-# sudo touch /etc/modprobe.d/blacklist-nouveau.conf
-# sudo echo "blacklist nouveau
-# options nouveau modeset=0" > /etc/modprobe.d/blacklist-nouveau.conf
-# sudo cat /etc/modprobe.d/blacklist-nouveau.conf
-# sudo update-initramfs -u
-# sudo update-grub
-# generalMessage "[!! IMPORTANT !!] Must reboot for these changes to take effect"
+headerMessage "Nvidia Configurations"
+actionMessage "Checking for AkiTiO Node and Nvidia devices"
+echo "Check that kernel version is at least 4.13"
+uname -a
+echo -e "\nCheck that eGPU appears as Thunderbolt device"
+cat /sys/bus/thunderbolt/devices/0-1/device_name
+echo ""
+echo "Authorize eGPU device"
+sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
+echo -e "\nCheck that eGPU now shows up with lspci"
+lspci -nn | grep -i nvidia
+echo ""
+ubuntu-drivers devices
+
+actionMessage "Blacklisting Nouveau"
+sudo touch /etc/modprobe.d/blacklist-nouveau.conf
+sudo echo "blacklist nouveau
+options nouveau modeset=0" > /etc/modprobe.d/blacklist-nouveau.conf
+sudo cat /etc/modprobe.d/blacklist-nouveau.conf
+sudo update-initramfs -u
+sudo update-grub
+generalMessage "[!! IMPORTANT !!] Must reboot for these changes to take effect"
