@@ -194,8 +194,7 @@ updateApt
 actionMessage "Installing Oracle Java 8 JRE and JDK"
 inputMessage
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt install -y oracle-java8-installer
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selectionso apt install -y oracle-java8-installer
 echo ""
 sudo apt install -y default-jre
 echo ""
