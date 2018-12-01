@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ensure that you have installed Ubuntu 18.04 full rather than minimal
+# Ensure that you are using Linux kernel >= 4.17.19
+
 sudo apt update
 sudo apt install gcc build-essential hwinfo mesa-utils
 sudo echo "blacklist nouveau
@@ -7,8 +10,7 @@ options nouveau modeset=0" > /etc/modprobe.d/blacklist-nouveau.conf
 sudo cat /etc/modprobe.d/blacklist-nouveau.conf
 sudo update-initramfs -u
 sudo update-grub
-generalMessage "[!! IMPORTANT !!] Must reboot for these changes to take effect"
-
+echo "[!! IMPORTANT !!] Must reboot for these changes to take effect"
 
 echo "Check that kernel version is at least 4.13"
 uname -a
@@ -19,10 +21,11 @@ echo ""
 
 echo "Authorize eGPU device"
 sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
+sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-0/0-1/authorized'
 echo ""
 
 echo "Check that eGPU now shows up with lspci"
-lspci -vnn | grep VGA
+lspci | grep -E "VGA|3D"
 echo ""
 
 echo "Check that Nvidia shows up with lshw"
@@ -36,7 +39,16 @@ glxinfo | grep "OpenGL"
 echo ""
 ubuntu-drivers devices
 
-
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt update
 sudo ubuntu-drivers devices
+
+# Logout
+# Ctrl + Alt + F2
+# sudo service gdm3 stop
+# sudo init 3
+# Sign in again
+# Install 415 driver
+# sudo apt install nvidia-driver-415
+# Alternatively
+# sudo ubuntu-drivers autoinstall
