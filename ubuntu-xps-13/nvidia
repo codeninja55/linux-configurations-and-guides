@@ -1,0 +1,42 @@
+#!/bin/bash
+
+sudo apt update
+sudo apt install gcc build-essential hwinfo mesa-utils
+sudo echo "blacklist nouveau
+options nouveau modeset=0" > /etc/modprobe.d/blacklist-nouveau.conf
+sudo cat /etc/modprobe.d/blacklist-nouveau.conf
+sudo update-initramfs -u
+sudo update-grub
+generalMessage "[!! IMPORTANT !!] Must reboot for these changes to take effect"
+
+
+echo "Check that kernel version is at least 4.13"
+uname -a
+echo ""
+echo "Check that eGPU appears as Thunderbolt device"
+cat /sys/bus/thunderbolt/devices/0-1/device_name
+echo ""
+
+echo "Authorize eGPU device"
+sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
+echo ""
+
+echo "Check that eGPU now shows up with lspci"
+lspci -vnn | grep VGA
+echo ""
+
+echo "Check that Nvidia shows up with lshw"
+sudo lshw --numeric -C display
+echo ""
+
+hwinfo --gfxcard
+echo ""
+
+glxinfo | grep "OpenGL"
+echo ""
+ubuntu-drivers devices
+
+
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo ubuntu-drivers devices

@@ -10,8 +10,13 @@ echo "Authorize eGPU device"
 sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
 echo ""
 echo "Check that eGPU now shows up with lspci"
-lspci -nn | grep -E 'VGA|Display|3D'
+lspci -vnn | grep VGA
 echo ""
-echo "Check if Ubuntu recognises drivers..."
+echo "Check that Nvidia shows up with lshw"
+sudo lshw -C display
+echo ""
+hwinfo --gfxcard
+echo ""
+glxinfo | grep "OpenGL"
+echo ""
 ubuntu-drivers devices
-echo ""
