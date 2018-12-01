@@ -57,6 +57,6 @@ conda remove --quiet --yes --force qt pyqt && \
 conda clean -tipsy
 
 jt -t onedork -kl -T -N -altp -lineh 150 -cellw 88% -nfs 115 -dfs 115 \
--fs 95 -ofs 105 -tfs 105 -cursc r -dfonts
+-fs 105 -ofs 105 -tfs 105 -cursc r -dfonts
 
 conda update --all
