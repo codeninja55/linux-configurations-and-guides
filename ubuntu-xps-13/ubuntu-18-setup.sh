@@ -414,6 +414,7 @@ actionMessage "Disabling packagekitd and gnome-software"
 sudo mkdir /usr/lib/packagekit/backup
 sudo mv -v /usr/lib/packagekit/packagekitd /usr/lib/packagekit/backup/
 sudo killall packagekitd
+sudo systemctl mask packagekit.service
 gsettings set org.gnome.software download-updates false
 
 actionMessage "Disabling snapd"
@@ -425,6 +426,7 @@ actionMessage "Removing accessibility utilities"
 sudo apt purge speech-dispatcher orca
 actionMessage "Installing zRam"
 sudo apt install -y zram-config
+
 actionMessage "Defragging"
 sudo e4defrag -c /
 cleanApt
