@@ -154,6 +154,21 @@ chmod -R +rwx ${HOME}/Github
 sudo chown -R codeninja:codeninja ${HOME}/Github
 
 
+############################## Powerline Shell ##############################
+sudo apt install powerline powerline-gitstatus fonts-powerline -y
+echo -e "# POWERLINE SETUP
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND=\"_update_ps1; $PROMPT_COMMAND\"
+fi
+" >> ~/.bashrc
+
+mkdir -p ~/.config/powerline-shell
+powerline-shell --generate-config > ~/.config/powerline-shell/config.json
+
 ############################## Dropbox ##############################
 dropbox_linux_url='https://www.dropbox.com/sh/oq9sr4ryaypus6e/AACOpYR8hSgSKlK6JisiISA_a?dl=1'
 dropbox_zip=${HOME}/linux.zip
@@ -230,7 +245,7 @@ headerMessage "Typora"
 actionMessage "Adding key"
 wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
 actionMessage "Adding repository"
-sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo add-apt-repository -y 'deb https://typora.io/linux ./'
 updateApt
 actionMessage "Installing typora"
 sudo apt install -y typora
@@ -334,6 +349,11 @@ actionMessage "Installing Global Protect"
 globalprotect_deb=${BACKUP_DIR}/Packages/GlobalProtect_deb-4.1.5.0-8.deb
 sudo dpkg -i ${globalprotect_deb}
 rm ${globalprotect_deb}
+
+
+############################## Paper Theme ##############################
+sudo add-apt-repository -uy ppa:snwh/ppa
+sudo apt-get install paper-icon-theme
 
 
 ############################## Numix Theme ##############################
