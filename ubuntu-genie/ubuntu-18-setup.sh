@@ -88,9 +88,9 @@ actionMessage "Installing new packages"
 generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
    gnome-tweaks, compizconfig-settings-manager, exfat-utils, exfat-fuse,
    seahorse, scala dconf-tools"
-sudo apt install -y git curl tlp tlp-rdw xclip chrome-gnome-shell \
+sudo apt install -y git curl xclip chrome-gnome-shell \
      gnome-tweaks compizconfig-settings-manager exfat-utils exfat-fuse \
-     seahorse scala dconf-tools
+     seahorse scala
 completeMessage
 
 
@@ -110,17 +110,13 @@ alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --colo
 cat ${HOME}/.bash_aliases
 completeMessage
 
-headerMessage "Activating tlp Battery Saver"
-sudo tlp start
-completeMessage
-
 headerMessage "Activating UFW Firewall"
 generalMessage "UFW Status: "
 sudo ufw status
 actionMessage "Enabling firewall"
 sudo ufw enable
 actionMessage "Setting rules"
-sudo ufw allow ssh
+sudo ufw allow from 192.168.5..0/24 to any port 22
 sudo ufw allow from 192.168.5.0/24 to any port 24800
 completeMessage
 
@@ -142,16 +138,16 @@ updateApt
 sudo apt install git-lfs
 
 headerMessage "Linux Configurations"
-linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
+# linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
 linux_config_dir=${HOME}/Github/linux-configurations-and-guides
-actionMessage "Downloading from ${linux_config_url}"
-mkdir ${HOME}/Github
-mkdir ${linux_config_dir}
-if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
-    git clone ${linux_config_url} ${linux_config_dir}
-fi
-chmod -R +rwx ${HOME}/Github
-sudo chown -R codeninja:codeninja ${HOME}/Github
+# actionMessage "Downloading from ${linux_config_url}"
+# mkdir ${HOME}/Github
+# mkdir ${linux_config_dir}
+# if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
+    # git clone ${linux_config_url} ${linux_config_dir}
+# fi
+# chmod -R +rwx ${HOME}/Github
+# sudo chown -R codeninja:codeninja ${HOME}/Github
 
 
 ############################## Powerline Shell ##############################
@@ -252,26 +248,26 @@ sudo apt install -y typora
 
 
 ############################## Google Chrome ##############################
-headerMessage "Google Chrome"
-chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
-chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
-
-actionMessage "Installing Google Chrome from ${chrome_url}"
-wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
-sudo dpkg -i ${chrome_deb}
-rm ${chrome_deb}
+# headerMessage "Google Chrome"
+# chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+# chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
+#
+# actionMessage "Installing Google Chrome from ${chrome_url}"
+# wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
+# sudo dpkg -i ${chrome_deb}
+# rm ${chrome_deb}
 
 
 ############################## Atom ##############################
 headerMessage "Atom"
-atom_url='https://atom.io/download/deb'
-atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
-
-actionMessage "Installing Atom from ${atom_url}"
-wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
-sudo apt install -y gconf2 libgnome-keyring0
-sudo dpkg -i ${atom_deb}
-rm ${atom_deb}
+# atom_url='https://atom.io/download/deb'
+# atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
+#
+# actionMessage "Installing Atom from ${atom_url}"
+# wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
+# sudo apt install -y gconf2 libgnome-keyring0
+# sudo dpkg -i ${atom_deb}
+# rm ${atom_deb}
 
 actionMessage "Installing Atom plugins"
 apm install atom-material-ui
@@ -336,11 +332,11 @@ completeMessage
 
 
 ############################## Synergy ##############################
-headerMessage "Synergy"
-actionMessage "Installing Synergy 1"
-synergy_deb=${BACKUP_DIR}/Packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
-sudo dpkg -i ${synergy_deb}
-rm ${synergy_deb}
+# headerMessage "Synergy"
+# actionMessage "Installing Synergy 1"
+# synergy_deb=${BACKUP_DIR}/Packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
+# sudo dpkg -i ${synergy_deb}
+# rm ${synergy_deb}
 
 
 ############################## Global Protect ##############################
@@ -402,45 +398,45 @@ completeMessage
 
 
 ############################## GNOME SHELL CONFIGURATIONS ######################
-# headerMessage "gnome shell configurations"
+headerMessage "gnome shell configurations"
 # gnome_shell_backup=${linux_config_dir}/ubuntu-xps-13/gnome_shell
-# actionMessage "Installing dependencies for system-monitor"
-# #### system-monitor extension
-# sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
-# sudo apt install -y -f
-# sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
+actionMessage "Installing dependencies for system-monitor"
+#### system-monitor extension
+sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
+sudo apt install -y -f
+sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
 # actionMessage "Copying extensions to ${HOME}/.local/share/gnome-shell/extenions/"
 # sudo cp -vr ${gnome_shell_backup}/*  ${HOME}/.local/share/gnome-shell/extensions/
 # dconf load / < ${gnome_shell_backup}/saved_settings.dconf
 #
-# gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-# gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
-# gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED
-# gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 32
-# gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
-#
-# gsettings reset org.gnome.shell.extensions.dash-to-dock dash-max
+gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
+gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED
+gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
+gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
+
+gsettings reset org.gnome.shell.extensions.dash-to-dock dash-max
 
 
 ############################## Ubuntu Cleanup ##############################
 headerMessage "Cleaning Up Ubuntu"
 cleanApt
 
-actionMessage "Disabling evolution"
-sudo mv /usr/lib/evolution-data-server /usr/lib/evolution-data-server-disabled
-sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
+# actionMessage "Disabling evolution"
+# sudo mv /usr/lib/evolution-data-server /usr/lib/evolution-data-server-disabled
+# sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
 
-actionMessage "Disabling packagekitd and gnome-software"
-sudo mkdir /usr/lib/packagekit/backup
-sudo mv -v /usr/lib/packagekit/packagekitd /usr/lib/packagekit/backup/
-sudo killall packagekitd
-sudo systemctl mask packagekit.service
-gsettings set org.gnome.software download-updates false
+# actionMessage "Disabling packagekitd and gnome-software"
+# sudo mkdir /usr/lib/packagekit/backup
+# sudo mv -v /usr/lib/packagekit/packagekitd /usr/lib/packagekit/backup/
+# sudo killall packagekitd
+# sudo systemctl mask packagekit.service
+# gsettings set org.gnome.software download-updates false
 
-actionMessage "Disabling snapd"
-sudo mkdir /usr/lib/snapd/backup
-sudo mv -v /usr/lib/snapd/snapd /usr/lib/snapd/backup/
-sudo killall snapd
+# actionMessage "Disabling snapd"
+# sudo mkdir /usr/lib/snapd/backup
+# sudo mv -v /usr/lib/snapd/snapd /usr/lib/snapd/backup/
+# sudo killall snapd
 
 actionMessage "Removing accessibility utilities"
 sudo apt purge speech-dispatcher orca
@@ -458,12 +454,8 @@ headerMessage "Nvidia Configurations"
 actionMessage "Checking for AkiTiO Node and Nvidia devices"
 echo "Check that kernel version is at least 4.13"
 uname -a
-echo -e "\nCheck that eGPU appears as Thunderbolt device"
-cat /sys/bus/thunderbolt/devices/0-1/device_name
-echo ""
-echo "Authorize eGPU device"
-sudo sh -c 'echo 1 > /sys/bus/thunderbolt/devices/0-1/authorized'
-echo -e "\nCheck that eGPU now shows up with lspci"
+
+echo -e "\nCheck that GPU now shows up with lspci"
 lspci -nn | grep -i nvidia
 echo ""
 ubuntu-drivers devices
@@ -490,11 +482,11 @@ sudo apt -y install r-base
 
 ############################## Anaconda ##############################
 headerMessage "Anaconda"
-anaconda_run=${BACKUP_DIR}/Packages/Anaconda3-5.3.0-Linux-x86_64.sh
-actionHeader "Installing Anaconda"
-sudo chmod +x ${anaconda_run}
-inputMessage
-${anaconda_run}
+# anaconda_run=${BACKUP_DIR}/Packages/Anaconda3-5.3.0-Linux-x86_64.sh
+# actionHeader "Installing Anaconda"
+# sudo chmod +x ${anaconda_run}
+# inputMessage
+# ${anaconda_run}
 
 
 ############################## Git PKI ##############################
