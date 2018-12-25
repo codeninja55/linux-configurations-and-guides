@@ -51,7 +51,7 @@ function fixAptInstall() { sudo apt -y install -f; echo ""; }
 ################################################################################
 ############################## Main Script #####################################
 ################################################################################
-headerMessage "Ubuntu 18.04 Initial Configurations"
+headerMessage "G.E.N.I.E Ubuntu 18.04 Initial Configurations"
 usage() { echo -e "${whitef}Usage: $0 [-r change root passwd])${reset}" 1>&2; exit 1; }
 
 while getopts ":r" OPTION; do
