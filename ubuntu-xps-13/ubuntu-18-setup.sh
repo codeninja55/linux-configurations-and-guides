@@ -120,7 +120,8 @@ sudo ufw status
 actionMessage "Enabling firewall"
 sudo ufw enable
 actionMessage "Setting rules"
-sudo ufw allow ssh
+# sudo ufw allow ssh
+sudo ufw allow from 192.168.5.0/24 to any port 22
 sudo ufw allow from 192.168.5.0/24 to any port 24800
 completeMessage
 
