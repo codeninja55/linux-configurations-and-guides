@@ -86,10 +86,10 @@ completeMessage
 
 actionMessage "Installing new packages"
 generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
-   gnome-tweaks, compizconfig-settings-manager, exfat-utils, exfat-fuse,
+   gnome-tweaks, exfat-utils, exfat-fuse, texlive-full
    seahorse, scala dconf-tools"
 sudo apt install -y git curl xclip chrome-gnome-shell \
-     gnome-tweaks compizconfig-settings-manager exfat-utils exfat-fuse \
+     gnome-tweaks exfat-utils exfat-fuse textlive-full \
      seahorse scala
 completeMessage
 
@@ -125,7 +125,7 @@ completeMessage
 headerMessage "Git Configurations and LFS"
 actionMessage "Configuring --global"
 git config --global user.name "codeninja55"
-git config --global user.email andrew@codeninja55.me
+git config --global user.email "andrew@codeninja55.me"
 completeMessage
 
 actionMessage "Installing Git LFS"
@@ -138,32 +138,17 @@ updateApt
 sudo apt install git-lfs
 
 headerMessage "Linux Configurations"
-# linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
+linux_config_url='https://github.com/codeninja55/linux-configurations-and-guides.git'
 linux_config_dir=${HOME}/Github/linux-configurations-and-guides
-# actionMessage "Downloading from ${linux_config_url}"
-# mkdir ${HOME}/Github
-# mkdir ${linux_config_dir}
-# if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
-    # git clone ${linux_config_url} ${linux_config_dir}
-# fi
-# chmod -R +rwx ${HOME}/Github
-# sudo chown -R codeninja:codeninja ${HOME}/Github
-
-
-############################## Powerline Shell ##############################
-sudo apt install powerline powerline-gitstatus fonts-powerline -y
-echo -e "# POWERLINE SETUP
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
-}
-
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND=\"_update_ps1; $PROMPT_COMMAND\"
+actionMessage "Downloading from ${linux_config_url}"
+mkdir ${HOME}/Github
+mkdir ${linux_config_dir}
+if [ -d "${HOME}/Github/linux-configurations-and-guides" ]; then
+    git clone ${linux_config_url} ${linux_config_dir}
 fi
-" >> ~/.bashrc
+chmod -R +rwx ${HOME}/Github
+sudo chown -R codeninja:codeninja ${HOME}/Github
 
-mkdir -p ~/.config/powerline-shell
-powerline-shell --generate-config > ~/.config/powerline-shell/config.json
 
 ############################## Dropbox ##############################
 dropbox_linux_url='https://www.dropbox.com/sh/oq9sr4ryaypus6e/AACOpYR8hSgSKlK6JisiISA_a?dl=1'
@@ -177,7 +162,7 @@ chmod -R +rwx ${BACKUP_DIR}
 sudo chown -R codeninja:codeninja ${BACKUP_DIR}
 
 headerMessage "Dropbox"
-dropbox_url='https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2015.10.28_amd64.deb'
+dropbox_url='https://www.dropbox.com/download?dl=packages/ubuntu/dropbox_2018.11.28_amd64.deb'
 dropbox_deb=${DOWNLOAD_DIR}/$(basename ${dropbox_url})
 actionMessage "Installing Dropbox from ${dropbox_url}"
 wget -cO ${dropbox_deb} ${dropbox_url} --read-timeout=5 --tries=0
@@ -248,26 +233,26 @@ sudo apt install -y typora
 
 
 ############################## Google Chrome ##############################
-# headerMessage "Google Chrome"
-# chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
-# chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
-#
-# actionMessage "Installing Google Chrome from ${chrome_url}"
-# wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
-# sudo dpkg -i ${chrome_deb}
-# rm ${chrome_deb}
+headerMessage "Google Chrome"
+chrome_url='https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb'
+chrome_deb=${DOWNLOAD_DIR}/$(basename ${chrome_url})
+
+actionMessage "Installing Google Chrome from ${chrome_url}"
+wget -cO ${chrome_deb} ${chrome_url} --read-timeout=5 --tries=0
+sudo dpkg -i ${chrome_deb}
+rm ${chrome_deb}
 
 
 ############################## Atom ##############################
 headerMessage "Atom"
-# atom_url='https://atom.io/download/deb'
-# atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
-#
-# actionMessage "Installing Atom from ${atom_url}"
-# wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
-# sudo apt install -y gconf2 libgnome-keyring0
-# sudo dpkg -i ${atom_deb}
-# rm ${atom_deb}
+atom_url='https://atom.io/download/deb'
+atom_deb=${DOWNLOAD_DIR}/"atom-amd64.deb"
+
+actionMessage "Installing Atom from ${atom_url}"
+wget -cO ${atom_deb} ${atom_url} --read-timeout=5 --tries=0
+sudo apt install -y gconf2 libgnome-keyring0
+sudo dpkg -i ${atom_deb}
+rm ${atom_deb}
 
 actionMessage "Installing Atom plugins"
 apm install atom-material-ui
@@ -324,19 +309,19 @@ ln -s ${DIR}/jetbrains-toolbox.sh /usr/local/bin/jetbrains-toolbox
 chmod -R +rwx /usr/local/bin/jetbrains-toolbox
 rm ${DEST}
 
-cp -r ${BACKUP_DIR}/.IntelliJIdea2018.2 ${HOME}
-cp -r ${BACKUP_DIR}/.CLion2018.2 ${HOME}
-cp -r ${BACKUP_DIR}/.PyCharm2018.2 ${HOME}
+# cp -r ${BACKUP_DIR}/.IntelliJIdea2018.2 ${HOME}
+# cp -r ${BACKUP_DIR}/.CLion2018.2 ${HOME}
+# cp -r ${BACKUP_DIR}/.PyCharm2018.2 ${HOME}
 
 completeMessage
 
 
 ############################## Synergy ##############################
-# headerMessage "Synergy"
-# actionMessage "Installing Synergy 1"
-# synergy_deb=${BACKUP_DIR}/Packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
-# sudo dpkg -i ${synergy_deb}
-# rm ${synergy_deb}
+headerMessage "Synergy"
+actionMessage "Installing Synergy 1"
+synergy_deb=${BACKUP_DIR}/Packages/synergy_1.10.1.stable_b81+8941241e_ubuntu_amd64.deb
+sudo dpkg -i ${synergy_deb}
+rm ${synergy_deb}
 
 
 ############################## Global Protect ##############################
@@ -421,13 +406,6 @@ cleanApt
 
 actionMessage "Removing accessibility utilities"
 sudo apt purge speech-dispatcher orca
-actionMessage "Installing zRam"
-sudo apt install -y zram-config
-
-actionMessage "Defragging"
-sudo e4defrag -c /
-cleanApt
-completeMessage
 
 
 ############################## NVIDIA CONFIGURATIONS ###########################
@@ -463,11 +441,52 @@ sudo apt -y install r-base
 
 ############################## Anaconda ##############################
 headerMessage "Anaconda"
-# anaconda_run=${BACKUP_DIR}/Packages/Anaconda3-5.3.0-Linux-x86_64.sh
-# actionHeader "Installing Anaconda"
-# sudo chmod +x ${anaconda_run}
-# inputMessage
-# ${anaconda_run}
+anaconda_run=${BACKUP_DIR}/Packages/Anaconda3-2018.12-Linux-x86_64.sh
+actionHeader "Installing Anaconda"
+sudo chmod +x ${anaconda_run}
+inputMessage
+${anaconda_run}
+source ${HOME}/,bashrc
+
+
+############################## Bash Git Prompt Powerline Shell ##############################
+powerline_shell_url="https://github.com/b-ryan/powerline-shell.git"
+powerline_shell_dir=${HOME}/Github/powerline-shell
+# sudo apt install -y powerline fonts-powerline
+
+mkdir ${bash_git_prompt_dir}
+if [ -d "${HOME}/Github/powerline-shell ]; then
+    git clone ${powerline_shell_url} ${powerline_shell_dir}
+fi
+
+echo -e "##### BASH GIT PROMPT POWERLINE SETUP #####
+function _update_ps1() {
+    PS1=$(powerline-shell $?)
+}
+
+if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+    PROMPT_COMMAND=\"_update_ps1; $PROMPT_COMMAND\"
+fi
+" >> ~/.bashrc
+
+cd ${powerline_shell_dir}
+python setup.py install
+
+mkdir -p ~/.config/powerline-shell
+mkdir ${HOME}/.bin
+powerline-shell --generate-config > ~/.config/powerline-shell/config.json
+cp ${linux_config_url}/ubuntu-genie/powerline-shell-configs/cn55_powerline.py ${HOME}/.bin
+cp ${linux_config_url}/ubuntu-genie/powerline-shell-configs/config.json ${HOME}/.config/powerline-shell/
+
+
+############################## VMWare Workstation Pro 15 ##############################
+vmware_bundle=${BACKUP_DIR}/Packages/VMware-Workstation-Full-15.0.2-10952284.x86_64.bundle
+
+headerMessage "VMWare Workstation Pro 15"
+actionHeader "Installation from VMware-Workstation-Full-15.0.2-10952284.x86_64.bundle"
+sudo chmod +X ${vmware_bundle}
+${vmware_bundle}
+inputMessage
 
 
 ############################## Git PKI ##############################
@@ -477,6 +496,7 @@ cat /dev/zero | ssh-keygen -t rsa -b 4096 -C "andrew@codeninja55.me" -f ${HOME}/
 eval "$(ssh-agent -s)"
 ssh-add ${HOME}/.ssh/github_rsa
 xclip -sel clip < ${HOME}/.ssh/github_rsa.pub
+ssh -T git@github.com
 generalMessage "Go to paste new key https://github.com/settings/keys"
 completeMessage
 
