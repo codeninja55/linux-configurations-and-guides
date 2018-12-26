@@ -1,36 +1,4 @@
-# Some Useful Configurations for Ubuntu GNome 17.04 installed on XPS 13 9360
-
-
-## Install tlp battery saver
-
-```
-$ sudo apt-get update
-$ sudo apt-get install tlp tlp-rdw
-```
-
-## Touchpad Palm Detection Fix
-
-Install package: `$ sudo apt-get install xserver-xorg-input-libinput`
-
-Make changes to the configuration file: `$ sudo nano /usr/share/X11/xorg.conf.d/90-libinput.conf`
-
-Find this section:
-
-```
-Section "InputClass"
-        Identifier "libinput touchpad catchall"
-        MatchIsTouchpad "on"
-        MatchDevicePath "/dev/input/event*"
-        Driver "libinput"
-EndSection
-```
-
-Add in these options after **_Driver_**
-```
-Option "Tapping" "True"
-Option "PalmDetection" "True"
-Option "TappingDragLock" "True"
-```
+# Some Useful Configurations for Ubuntu 18.04 installed on Ubuntu G.E.N.I.E PC
 
 ## Activate Firewall
 
@@ -201,4 +169,4 @@ Firstly, remove all files in the logs: `$ sudo rm /var/crash/*`
 Now disable apport permanently: `$ sudo nano /etc/default/apport`
 - Change the line where it says **enabled=1** to **enabled=0**.
 
-*WARNING* It is not recommended that you try to remove apport. 
+*WARNING* It is not recommended that you try to remove apport.

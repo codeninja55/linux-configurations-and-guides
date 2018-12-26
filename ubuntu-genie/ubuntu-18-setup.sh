@@ -399,44 +399,25 @@ completeMessage
 
 ############################## GNOME SHELL CONFIGURATIONS ######################
 headerMessage "gnome shell configurations"
-# gnome_shell_backup=${linux_config_dir}/ubuntu-xps-13/gnome_shell
 actionMessage "Installing dependencies for system-monitor"
 #### system-monitor extension
 sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
 sudo apt install -y -f
 sudo apt install -y gir1.2-gtop-2.0 gir1.2-networkmanager-1.0 gir1.2-clutter-1.0
-# actionMessage "Copying extensions to ${HOME}/.local/share/gnome-shell/extenions/"
-# sudo cp -vr ${gnome_shell_backup}/*  ${HOME}/.local/share/gnome-shell/extensions/
-# dconf load / < ${gnome_shell_backup}/saved_settings.dconf
-#
+generalMessage "Go to https://extensions.gnome.org/extension/120/system-monitor/ for system-monitor"
+
 gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
 gsettings set org.gnome.shell.extensions.dash-to-dock dock-position BOTTOM
 gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode FIXED
 gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 36
 gsettings set org.gnome.shell.extensions.dash-to-dock unity-backlit-items true
 
-gsettings reset org.gnome.shell.extensions.dash-to-dock dash-max
-
+# gsettings reset org.gnome.shell.extensions.dash-to-dock dash-max
+generalMessage "Go to https://extensions.gnome.org/extension/307/dash-to-dock/ to install dash-to-dock"
 
 ############################## Ubuntu Cleanup ##############################
 headerMessage "Cleaning Up Ubuntu"
 cleanApt
-
-# actionMessage "Disabling evolution"
-# sudo mv /usr/lib/evolution-data-server /usr/lib/evolution-data-server-disabled
-# sudo mv /usr/lib/evolution /usr/lib/evolution-disabled
-
-# actionMessage "Disabling packagekitd and gnome-software"
-# sudo mkdir /usr/lib/packagekit/backup
-# sudo mv -v /usr/lib/packagekit/packagekitd /usr/lib/packagekit/backup/
-# sudo killall packagekitd
-# sudo systemctl mask packagekit.service
-# gsettings set org.gnome.software download-updates false
-
-# actionMessage "Disabling snapd"
-# sudo mkdir /usr/lib/snapd/backup
-# sudo mv -v /usr/lib/snapd/snapd /usr/lib/snapd/backup/
-# sudo killall snapd
 
 actionMessage "Removing accessibility utilities"
 sudo apt purge speech-dispatcher orca
