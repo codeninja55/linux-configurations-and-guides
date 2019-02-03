@@ -90,8 +90,11 @@ generalMessage "Including: git, curl, tlp, xclip, chrome-gnome-shell,
    seahorse, scala dconf-tools"
 sudo apt install -y git curl xclip chrome-gnome-shell \
      gnome-tweaks exfat-utils exfat-fuse textlive-full \
-     seahorse scala
+     scala
 completeMessage
+
+
+############################## Linux Kernel ##############################
 
 
 ############################## Bash Aliases ##############################
@@ -105,8 +108,9 @@ alias gohome='cd /home/codeninja/'
 alias godl='cd /home/codeninja/Downloads/'
 alias godropbox='cd ~/Dropbox && ls -a'
 alias godev='cd ~/Dropbox/development && ls -a'
-alias update-apt='sudo apt-get update && sudo apt-get upgrade'
-alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'" > ${HOME}/.bash_aliases
+alias update-sys='sudo apt-get update && sudo apt-get upgrade'
+alias git-log='git log --oneline --abbrev-commit --all --graph --decorate --color'
+alias sys-reboot='sudo systemctl reboot -i'" > ${HOME}/.bash_aliases
 cat ${HOME}/.bash_aliases
 completeMessage
 
@@ -258,8 +262,8 @@ actionMessage "Installing Atom plugins"
 apm install atom-material-ui
 apm install atom-material-syntax
 apm install atom-material-syntax-dark
+apm install atom-material-syntax-light
 apm install language-scala
-apm install linter-scalac
 apm install intellij-idea-keymap
 
 
@@ -422,7 +426,11 @@ ubuntu-drivers devices
 actionMessage "Blacklisting Nouveau"
 sudo touch /etc/modprobe.d/blacklist-nouveau.conf
 sudo echo "blacklist nouveau
-options nouveau modeset=0" > /etc/modprobe.d/blacklist-nouveau.conf
+blacklist lbm-nouveau
+options nouveau modeset=0
+alias nouveau off
+alias lbm-nouveau off" > /etc/modprobe.d/blacklist-nouveau.conf
+sudo echo "options nouveau modeset=0" | sudo tee -a /etc/modprobe.d/nouveau-kms.conf
 sudo cat /etc/modprobe.d/blacklist-nouveau.conf
 sudo update-initramfs -u
 sudo update-grub
